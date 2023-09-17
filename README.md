@@ -1,4 +1,3 @@
-1、Install and Run YoDe-Segmentation modle on image
 # YoDe-Segmentation
 
 ## Usage
@@ -15,11 +14,12 @@ pip install YoDe-Segmentation-v2==1.0.1
 ### Step 2: Weight configuration
 Put [the weight of Deeplabv3 model](https://drive.google.com/file/d/1ipJNPU5tmCcYDZIbo7_veMu5idQjdbiQ/view?usp=sharing) and [the weight of YOLOV5 model](https://drive.google.com/file/d/1tXX_-RE2sL2U7lRvFfOBUBTIIIN_MhnN/view?usp=sharing) in the [weights](https://github.com/OneChorm/YoDe-Segmentation/tree/master/weights) folder
 
-### Step 3: 
+### Step 3: Where should you put the images you want to predict
 Put the images you want to predict in the [test_img](https://github.com/OneChorm/YoDe-Segmentation/blob/master/test_img) folder
 
 ### Step 4: Predict
 ```bash
 yode_seg 
 ```
-
+## Datasets
+Please see [YoDe-Segmentation_data](https://github.com/OneChorm/YoDe-Segmentation_data)
