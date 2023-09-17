@@ -1,0 +1,1 @@
+[DeepLabv3](https://drive.google.com/file/d/1ipJNPU5tmCcYDZIbo7_veMu5idQjdbiQ/view?usp=sharing) and [YoLov5](https://drive.google.com/file/d/1tXX_-RE2sL2U7lRvFfOBUBTIIIN_MhnN/view?usp=sharing) model weights in this folder
