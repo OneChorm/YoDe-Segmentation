@@ -16,7 +16,7 @@ pip install YoDe-Segmentation-v2==1.0.1
 
 
 ### Step 3: 
-Put the images you want to predict in the test_img folder
+Put the images you want to predict in the [test_img](https://github.com/OneChorm/YoDe-Segmentation/blob/master/test_img) folder
 
 ### Step 4: Predict
 ```bash
