@@ -1,8 +1,0 @@
-train: ./paper_data/train.txt
-val: ./paper_data/val.txt
-
-#number of classes
-nc: 1
-
-# class names
-names: ['exist_molecular']
