@@ -115,7 +115,7 @@ def get_molecular(init_path, mask_path, value):
         if len(count) == 0:
             continue
         list_keys = get_threshold_keys.get_keys(count, value)
-        init_img_name = file_name.replace(".png", "")
+        init_img_name = file_name[:-4]
         init_img_path = init_path + "/" + init_img_name
         init_img = cv2.imread(init_img_path)
         # obtain images that are larger than the threshold
