@@ -22,4 +22,4 @@ Put the files or images you want to predict in the [test_img](https://github.com
 yode_seg 
 ```
 ## Datasets
-Please see [YoDe-Segmentation_data](https://github.com/OneChorm/YoDe-Segmentation_data)
+You can download the Datasets at [YoDe-Segmentation_data]([https://github.com/OneChorm/YoDe-Segmentation_data](https://figshare.com/articles/journal_contribution/YoDe-Segmentation_DATA_zip/24456277)https://figshare.com/articles/journal_contribution/YoDe-Segmentation_DATA_zip/24456277)
