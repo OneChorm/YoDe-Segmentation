@@ -21,11 +21,11 @@ Put the files or images you want to predict in the [test_img](https://github.com
 ```bash
 yode_seg 
 ```
-# Example
+## Example
 More examples are given in [this Jupyter Notebook](https://github.com/OneChorm/YoDe-Segmentation/blob/master/YoDe-Segmentation_documentation.ipynb).
 
-# Datasets
+## Datasets
 You can download the Datasets at [YoDe-Segmentation_data](https://figshare.com/articles/journal_contribution/YoDe-Segmentation_DATA_zip/24456277)
 
-# YoDe-Segmentation web app
+## YoDe-Segmentation web app
 You can use YoDe-Segmentation function by [YoDe-Segmentation web app](http://yode-segmentation.com) 
