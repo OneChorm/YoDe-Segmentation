@@ -19,7 +19,7 @@ Put the files or images you want to predict in the [test_img](https://github.com
 
 ### Step 4: Predict
 ```bash
-yode_seg 
+python predict_molecular.py
 ```
 ## Example
 More examples are given in [this Jupyter Notebook](https://github.com/OneChorm/YoDe-Segmentation/blob/master/YoDe-Segmentation_documentation.ipynb).
