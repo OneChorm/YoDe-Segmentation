@@ -28,4 +28,4 @@ More examples are given in [this Jupyter Notebook](https://github.com/OneChorm/Y
 You can download the Datasets at [YoDe-Segmentation_data](https://figshare.com/articles/journal_contribution/YoDe-Segmentation_DATA_zip/24456277)
 
 # YoDe-Segmentation web app
-you can use YoDe-Segmentation function by [YoDe-Segmentation web app](http://yode-segmentation.com) 
+You can use YoDe-Segmentation function by [YoDe-Segmentation web app](http://yode-segmentation.com) 
