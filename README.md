@@ -22,7 +22,9 @@ Put [the weight of Deeplabv3 model](https://drive.google.com/file/d/1ipJNPU5tmCc
 Put the files or images you want to predict in the [test_img](https://github.com/OneChorm/YoDe-Segmentation/blob/master/test_img) folder
 
 ### Step 4: Predict
-run the predict_molecular.py
+```bash
+yode_seg
+```
 
 ## Example
 More examples are given in [this Jupyter Notebook](https://github.com/OneChorm/YoDe-Segmentation/blob/master/YoDe-Segmentation_documentation.ipynb).
