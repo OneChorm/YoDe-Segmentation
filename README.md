@@ -22,7 +22,7 @@ Put [the weight of Deeplabv3 model](https://drive.google.com/file/d/1ipJNPU5tmCc
 If you need to work with pdf files, you should put the files in the [test_pdf](https://github.com/OneChorm/YoDe-Segmentation/blob/master/test_img) folder
 Convert pdf files to images
 ```bash
-python pdf2image
+python pdf2image.py
 ```
 if need to work with images, you should only put the images in the [test_img](https://github.com/OneChorm/YoDe-Segmentation/blob/master/test_img) folder
 
