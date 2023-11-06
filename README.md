@@ -19,7 +19,12 @@ pip install YoDe-Segmentation-v2==1.0.1
 Put [the weight of Deeplabv3 model](https://drive.google.com/file/d/1ipJNPU5tmCcYDZIbo7_veMu5idQjdbiQ/view?usp=sharing) and [the weight of YOLOV5 model](https://drive.google.com/file/d/1tXX_-RE2sL2U7lRvFfOBUBTIIIN_MhnN/view?usp=sharing) in the [weights](https://github.com/OneChorm/YoDe-Segmentation/tree/master/weights) folder
 
 ### Step 3: Where should you put the images you want to predict
-Put the files or images you want to predict in the [test_img](https://github.com/OneChorm/YoDe-Segmentation/blob/master/test_img) folder
+If you need to work with pdf files, you should put the files in the [test_pdf](https://github.com/OneChorm/YoDe-Segmentation/blob/master/test_img) folder
+Convert pdf files to images
+```bash
+python pdf2image
+```
+if need to work with images, you should only put the images in the [test_img](https://github.com/OneChorm/YoDe-Segmentation/blob/master/test_img) folder
 
 ### Step 4: Predict
 ```bash
