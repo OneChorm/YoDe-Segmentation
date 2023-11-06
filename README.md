@@ -6,6 +6,7 @@ You can use YoDe-Segmentation function by [YoDe-Segmentation web app](http://yod
 ## Usage
 ### Step 1: Environ building
 ```bash
+git clone https://github.com/OneChorm/YoDe-Segmentation
 conda create -n YoDe_Seg python==3.10.11
 conda activate YoDe_Seg
 pip install torch==1.11.0+cu113 torchvision==0.12.0+cu113 torchaudio==0.11.0 --extra-index-url https://download.pytorch.org/whl/cu113
