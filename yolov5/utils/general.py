@@ -864,7 +864,10 @@ def segment2box(segment, width=640, height=640):
     # Convert 1 segment label to 1 box label, applying inside-image constraint, i.e. (xy1, xy2, ...) to (xyxy)
     x, y = segment.T  # segment xy
     inside = (x >= 0) & (y >= 0) & (x <= width) & (y <= height)
-    (x, y,) = (
+    (
+        x,
+        y,
+    ) = (
         x[inside],
         y[inside],
     )
@@ -901,10 +904,9 @@ def scale_coords(img1_shape, coords, img0_shape, ratio_pad=None):
         gain = min(
             img1_shape[0] / img0_shape[0], img1_shape[1] / img0_shape[1]
         )  # gain  = old / new
-        pad = (
-            (img1_shape[1] - img0_shape[1] * gain) / 2,
-            (img1_shape[0] - img0_shape[0] * gain) / 2,
-        )  # wh padding
+        pad = (img1_shape[1] - img0_shape[1] * gain) / 2, (
+            img1_shape[0] - img0_shape[0] * gain
+        ) / 2  # wh padding
     else:
         gain = ratio_pad[0][0]
         pad = ratio_pad[1]

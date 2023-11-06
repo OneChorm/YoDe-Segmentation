@@ -1,11 +1,3 @@
-# YOLOv5 🚀 by Ultralytics, GPL-3.0 license
-"""
-YOLO-specific modules
-
-Usage:
-    $ python path/to/models/yolo.py --cfg yolov5s.yaml
-"""
-
 import argparse
 import os
 import platform
@@ -230,9 +222,9 @@ class Model(nn.Module):
     def _clip_augmented(self, y):
         # Clip YOLOv5 augmented inference tails
         nl = self.model[-1].nl  # number of detection layers (P3-P5)
-        g = sum(4 ** x for x in range(nl))  # grid points
+        g = sum(4**x for x in range(nl))  # grid points
         e = 1  # exclude layer count
-        i = (y[0].shape[1] // g) * sum(4 ** x for x in range(e))  # indices
+        i = (y[0].shape[1] // g) * sum(4**x for x in range(e))  # indices
         y[0] = y[0][:, :-i]  # large
         i = (y[-1].shape[1] // g) * sum(4 ** (nl - 1 - x) for x in range(e))  # indices
         y[-1] = y[-1][:, i:]  # small

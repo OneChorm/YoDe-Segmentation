@@ -42,6 +42,8 @@ class IntermediateLayerGetter(nn.ModuleDict):
             raise ValueError("return_layers are not present in model")
         orig_return_layers = return_layers
         return_layers = {str(k): str(v) for k, v in return_layers.items()}
+
+        # 重新构建backbone，将没有使用到的模块全部删掉
         layers = OrderedDict()
         for name, module in model.named_children():
             layers[name] = module
@@ -95,12 +97,14 @@ class DeepLabV3(nn.Module):
         result = OrderedDict()
         x = features["out"]
         x = self.classifier(x)
+        # 使用双线性插值还原回原图尺度
         x = F.interpolate(x, size=input_shape, mode="bilinear", align_corners=False)
         result["out"] = x
 
         if self.aux_classifier is not None:
             x = features["aux"]
             x = self.aux_classifier(x)
+            # 使用双线性插值还原回原图尺度
             x = F.interpolate(x, size=input_shape, mode="bilinear", align_corners=False)
             result["aux"] = x
 
@@ -204,6 +208,7 @@ def deeplabv3_resnet50(aux, num_classes=21, pretrain_backbone=False):
     backbone = resnet50(replace_stride_with_dilation=[False, True, True])
 
     if pretrain_backbone:
+        # 载入resnet50 backbone预训练权重
         backbone.load_state_dict(torch.load("resnet50.pth", map_location="cpu"))
 
     out_inplanes = 2048
@@ -261,6 +266,7 @@ def deeplabv3_mobilenetv3_large(aux, num_classes=21, pretrain_backbone=False):
     backbone = mobilenet_v3_large(dilated=True)
 
     if pretrain_backbone:
+        # 载入mobilenetv3 large backbone预训练权重
         backbone.load_state_dict(
             torch.load("mobilenet_v3_large.pth", map_location="cpu")
         )

@@ -262,7 +262,7 @@ class LoadImages:
         else:
             self.cap = None
         assert self.nf > 0, (
-            f"No images or pdfs found in {p}. "
+            f"No images or videos found in {p}. "
             f"Supported formats are:\nimages: {IMG_FORMATS}\nvideos: {VID_FORMATS}"
         )
 

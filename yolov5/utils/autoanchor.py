@@ -105,10 +105,9 @@ def kmean_anchors(
     def print_results(k, verbose=True):
         k = k[np.argsort(k.prod(1))]  # sort small to large
         x, best = metric(k, wh0)
-        bpr, aat = (
-            (best > thr).float().mean(),
-            (x > thr).float().mean() * n,
-        )  # best possible recall, anch > thr
+        bpr, aat = (best > thr).float().mean(), (
+            x > thr
+        ).float().mean() * n  # best possible recall, anch > thr
         s = (
             f"{PREFIX}thr={thr:.2f}: {bpr:.4f} best possible recall, {aat:.2f} anchors past thr\n"
             f"{PREFIX}n={n}, img_size={img_size}, metric_all={x.mean():.3f}/{best.mean():.3f}-mean/best, "

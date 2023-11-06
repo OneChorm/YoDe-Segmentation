@@ -33,7 +33,11 @@ class SegmentationPresetTrain:
         if hflip_prob > 0:
             trans.append(T.RandomHorizontalFlip(hflip_prob))
         trans.extend(
-            [T.RandomCrop(crop_size), T.ToTensor(), T.Normalize(mean=mean, std=std),]
+            [
+                T.RandomCrop(crop_size),
+                T.ToTensor(),
+                T.Normalize(mean=mean, std=std),
+            ]
         )
         self.transforms = T.Compose(trans)
 
@@ -73,6 +77,8 @@ def create_model(aux, num_classes):
     weights_dict = torch.load("./deeplabv3_resnet50_coco.pth", map_location="cpu")
 
     if num_classes != 21:
+        # 官方提供的预训练权重是21类(包括背景)
+        # 如果训练自己的数据集，将和类别相关的权重删除，防止权重shape不一致报错
         for k in list(weights_dict.keys()):
             if "classifier.4" in k:
                 del weights_dict[k]
@@ -93,6 +99,7 @@ def main(args):
     # segmentation nun_classes + background
     num_classes = args.num_classes + 1
 
+    # 用来保存coco_info的文件
     results_file = "results{}.txt".format(
         datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     )
@@ -233,9 +240,11 @@ def main(args):
         val_info = str(confmat)
         print(val_info)
 
+        # 只在主进程上进行写操作
         if args.rank in [-1, 0]:
             # write into txt
             with open(results_file, "a") as f:
+                # 记录每个epoch对应的train_loss、lr以及验证集各指标
                 train_info = (
                     f"[epoch: {epoch}]\n"
                     f"train_loss: {mean_loss:.4f}\n"
@@ -244,6 +253,7 @@ def main(args):
                 f.write(train_info + val_info + "\n\n")
 
         if args.output_dir:
+            # 只在主节点上执行保存权重操作
             save_file = {
                 "model": model_without_ddp.state_dict(),
                 "optimizer": optimizer.state_dict(),
@@ -267,12 +277,13 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description=__doc__)
 
+    # 训练文件的根目录(VOCdevkit)
     parser.add_argument("--data-path", default="/data/", help="dataset")
-
+    # 训练设备类型
     parser.add_argument("--device", default="cuda", help="device")
-
+    # 检测目标类别数(不包含背景)
     parser.add_argument("--num-classes", default=20, type=int, help="num_classes")
-
+    # 每块GPU上的batch_size
     parser.add_argument(
         "-b",
         "--batch-size",
@@ -281,9 +292,9 @@ if __name__ == "__main__":
         help="images per gpu, the total batch size is $NGPU x batch_size",
     )
     parser.add_argument("--aux", default=True, type=bool, help="auxilier loss")
-
+    # 指定接着从哪个epoch数开始训练
     parser.add_argument("--start_epoch", default=0, type=int, help="start epoch")
-
+    # 训练的总epoch数
     parser.add_argument(
         "--epochs",
         default=20,
@@ -291,11 +302,11 @@ if __name__ == "__main__":
         metavar="N",
         help="number of total epochs to run",
     )
-
+    # 是否使用同步BN(在多个GPU之间同步)，默认不开启，开启后训练速度会变慢
     parser.add_argument(
         "--sync_bn", type=bool, default=False, help="whether using SyncBatchNorm"
     )
-
+    # 数据加载以及预处理的线程数
     parser.add_argument(
         "-j",
         "--workers",
@@ -304,15 +315,15 @@ if __name__ == "__main__":
         metavar="N",
         help="number of data loading workers (default: 4)",
     )
-
+    # 训练学习率，这里默认设置成0.0001，如果效果不好可以尝试加大学习率
     parser.add_argument(
         "--lr", default=0.0001, type=float, help="initial learning rate"
     )
-
+    # SGD的momentum参数
     parser.add_argument(
         "--momentum", default=0.9, type=float, metavar="M", help="momentum"
     )
-
+    # SGD的weight_decay参数
     parser.add_argument(
         "--wd",
         "--weight-decay",
@@ -322,15 +333,15 @@ if __name__ == "__main__":
         help="weight decay (default: 1e-4)",
         dest="weight_decay",
     )
-
+    # 训练过程打印信息的频率
     parser.add_argument("--print-freq", default=20, type=int, help="print frequency")
-
+    # 文件保存地址
     parser.add_argument(
         "--output-dir", default="./multi_train", help="path where to save"
     )
-
+    # 基于上次的训练结果接着训练
     parser.add_argument("--resume", default="", help="resume from checkpoint")
-
+    # 不训练，仅测试
     parser.add_argument(
         "--test-only",
         dest="test_only",
@@ -338,6 +349,7 @@ if __name__ == "__main__":
         action="store_true",
     )
 
+    # 分布式进程数
     parser.add_argument(
         "--world-size", default=1, type=int, help="number of distributed processes"
     )
@@ -354,6 +366,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    # 如果指定了保存文件地址，检查文件夹是否存在，若不存在，则创建
     if args.output_dir:
         mkdir(args.output_dir)
 

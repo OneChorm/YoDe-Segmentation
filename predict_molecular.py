@@ -9,12 +9,18 @@ import torch
 from torchvision import transforms
 import numpy as np
 from PIL import Image
-import office
+
 from Image_Processing.biggest_shadow import get_molecular
 from Image_Processing.resize_img import resize_img520
+
 from deeplab_v3.src import deeplabv3_resnet50
 
-# from models.common import DetectMultiBackend
+FILE = Path(__file__).resolve()
+ROOT = FILE.parents[0]  # YOLOv5 root directory
+if str(ROOT) not in sys.path:
+    sys.path.append(str(ROOT))  # add ROOT to PATH
+ROOT = Path(os.path.relpath(ROOT, Path.cwd()))  # relative
+
 from yolov5.models.common import DetectMultiBackend
 from yolov5.utils.datasets import IMG_FORMATS, VID_FORMATS, LoadImages, LoadStreams
 from yolov5.utils.general import (
@@ -35,12 +41,6 @@ from yolov5.utils.general import (
 from yolov5.utils.plots import Annotator, colors, save_one_box
 from yolov5.utils.torch_utils import select_device, time_sync
 
-FILE = Path(__file__).resolve()
-ROOT = FILE.parents[0]
-if str(ROOT) not in sys.path:
-    sys.path.append(str(ROOT))
-ROOT = Path(os.path.relpath(ROOT, Path.cwd()))
-
 
 @torch.no_grad()
 def run(
@@ -52,38 +52,33 @@ def run(
     iou_thres=0.45,  # NMS IOU threshold
     max_det=1000,  # maximum detections per image
     device="",  # cuda device, i.e. 0 or 0,1,2,3 or cpu
-    view_img=True,  # show results
+    view_img=False,  # show results
     save_txt=False,  # save results to *.txt
     save_conf=False,  # save confidences in --save-txt labels
     save_crop=True,  # save cropped prediction boxes
-    nosave=True,  # do not save images/videos
+    nosave=False,  # do not save images/videos
     classes=None,  # filter by class: --class 0, or --class 0 2 3
     agnostic_nms=False,  # class-agnostic NMS
     augment=False,  # augmented inference
-    visualize=True,  # visualize features
+    visualize=False,  # visualize features
     update=False,  # update all models
     project=ROOT / "runs/detect",  # save results to project/name
     name="exp",  # save results to project/name
     exist_ok=False,  # existing project/name ok, do not increment
     line_thickness=3,  # bounding box thickness (pixels)
-    hide_labels=True,  # hide labels
+    hide_labels=False,  # hide labels
     hide_conf=False,  # hide confidences
     half=False,  # use FP16 half-precision inference
     dnn=False,  # use OpenCV DNN for ONNX inference
 ):
     source = str(source)
-    # save inference images
-    save_img = not nosave and not source.endswith(".txt")
+    save_img = not nosave and not source.endswith(".txt")  # save inference images
     is_file = Path(source).suffix[1:] in (IMG_FORMATS + VID_FORMATS)
     is_url = source.lower().startswith(("rtsp://", "rtmp://", "http://", "https://"))
     webcam = source.isnumeric() or source.endswith(".txt") or (is_url and not is_file)
     if is_url and is_file:
         source = check_file(source)  # download
 
-    # path to the image to process
-    if not os.path.exists("./Image_Processing/test_pngs"):
-        os.makedirs("./Image_Processing/test_pngs")
-    office.pdf.pdf2imgs("./test_img", "./Image_Processing/test_pngs")
     # Directories
     save_dir = increment_path(Path(project) / name, exist_ok=exist_ok)  # increment run
     (save_dir / "labels" if save_txt else save_dir).mkdir(
@@ -251,7 +246,7 @@ def run(
             if save_txt
             else ""
         )
-        LOGGER.info(f"Results saved to {colorstr('bold', save_dir)}{s}")
+        # LOGGER.info(f"Results saved to {colorstr('bold', save_dir)}{s}")
     if update:
         strip_optimizer(weights)  # update model (to fix SourceChangeWarning)
 
@@ -262,6 +257,7 @@ def run(
     paths = os.listdir(path)
     for img_name in paths:
         img_path = os.path.join(path, img_name)
+
         palette_path = "./deeplab_v3/palette.json"
         assert os.path.exists(weights_path), f"weights {weights_path} not found."
         assert os.path.exists(img_path), f"image {img_path} not found."
@@ -305,28 +301,33 @@ def run(
         img = data_transform(original_img)
         # expand batch dimension
         img = torch.unsqueeze(img, dim=0)
+
         model.eval()
         with torch.no_grad():
             # init model
             img_height, img_width = img.shape[-2:]
             init_img = torch.zeros((1, 3, img_height, img_width), device=device)
             model(init_img)
+
             t_start = time_synchronized()
             output = model(img.to(device))
             t_end = time_synchronized()
             print("inference+NMS time: {}".format(t_end - t_start))
+
             prediction = output["out"].argmax(1).squeeze(0)
             prediction = prediction.to("cpu").numpy().astype(np.uint8)
             mask = Image.fromarray(prediction)
             mask.putpalette(pallette)
-            if not os.path.exists("./Image_Processing/mask_img"):
-                os.makedirs("./Image_Processing/mask_img")
-            mask.save("./Image_Processing/mask_img/{}.png".format(img_name))
+            # mask_path= ".//mask_img"
+            if not os.path.exists(".//mask_img"):
+                os.makedirs(".//mask_img")
 
-    # The size of the chemical molecular structure map trimmed by YOLOV5 was consistent with the size of the mask obtained by deeplabv3
-    if not os.path.exists("./Image_Processing/resize_img"):
-        os.makedirs("./Image_Processing/resize_img")
-    resize_img520(path, "./Image_Processing/resize_img")
+            mask.save("./mask_img/{}.png".format(img_name))
+
+    #     The size of the chemical molecular structure map trimmed by YOLOV5 was consistent with the size of the mask obtained by deeplabv3
+    if not os.path.exists(".//resize_img"):
+        os.makedirs(".//resize_img")
+    resize_img520(path, "./resize_img")
 
 
 def parse_opt():
@@ -341,13 +342,13 @@ def parse_opt():
     parser.add_argument(
         "--source",
         type=str,
-        default="./Image_Processing/test_pngs",
+        default=ROOT / "./test_img",
         help="file/dir/URL/glob, 0 for webcam",
     )
     parser.add_argument(
         "--data",
         type=str,
-        default=ROOT / "yolov5/myvoc.yaml",
+        default=ROOT / "yolov5/paper_data/myvoc.yaml",
         help="(optional) dataset.yaml path",
     )
     parser.add_argument(
@@ -393,7 +394,9 @@ def parse_opt():
     parser.add_argument("--visualize", action="store_true", help="visualize features")
     parser.add_argument("--update", action="store_true", help="update all models")
     parser.add_argument(
-        "--project", default=ROOT / "runs/detect", help="save results to project/name",
+        "--project",
+        default=ROOT / "yolov5/runs/detect",
+        help="save results to project/name",
     )
     parser.add_argument("--name", default="exp", help="save results to project/name")
     parser.add_argument(
@@ -433,10 +436,9 @@ def main(opt):
     run(**vars(opt))
 
     # To get the mask of figure and generate the noise without noise chemical molecular structure
-    get_molecular("./Image_Processing/resize_img", "./Image_Processing/mask_img", 0.5)
+    get_molecular("./resize_img", "./mask_img", 0.5)
 
 
 if __name__ == "__main__":
-
     opt = parse_opt()
     main(opt)
