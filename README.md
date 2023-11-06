@@ -21,9 +21,9 @@ Put [the weight of Deeplabv3 model](https://drive.google.com/file/d/1ipJNPU5tmCc
 ### Step 3: Where should you put the images you want to predict
 If you need to work with pdf files, you should put the files in the [test_pdf](https://github.com/OneChorm/YoDe-Segmentation/blob/master/test_pdf) folder
 
-Convert pdf files to images
-
-run the pdf2img.py
+  Convert pdf files to images
+  
+  run the pdf2img.py
 
 if need to work with images, you should only put the images in the [test_img](https://github.com/OneChorm/YoDe-Segmentation/blob/master/test_img) folder
 
