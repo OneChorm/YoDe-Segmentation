@@ -21,15 +21,12 @@ Put [the weight of Deeplabv3 model](https://drive.google.com/file/d/1ipJNPU5tmCc
 ### Step 3: Where should you put the images you want to predict
 If you need to work with pdf files, you should put the files in the [test_pdf](https://github.com/OneChorm/YoDe-Segmentation/blob/master/test_pdf) folder
 Convert pdf files to images
-```bash
-python pdf2img.py
-```
+run the pdf2img.py
+
 if need to work with images, you should only put the images in the [test_img](https://github.com/OneChorm/YoDe-Segmentation/blob/master/test_img) folder
 
 ### Step 4: Predict
-```bash
-yode_seg
-```
+run the predict_molecular.py
 
 ## Example
 More examples are given in [this Jupyter Notebook](https://github.com/OneChorm/YoDe-Segmentation/blob/master/YoDe-Segmentation_documentation.ipynb).
