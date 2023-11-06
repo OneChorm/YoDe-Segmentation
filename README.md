@@ -1,8 +1,12 @@
 # YoDe-Segmentation
 
+## YoDe-Segmentation web app
+You can use YoDe-Segmentation function by [YoDe-Segmentation web app](http://yode-segmentation.com) 
+
 ## Usage
 ### Step 1: Environ building
 ```bash
+git clone https://github.com/OneChorm/YoDe-Segmentation
 conda create -n YoDe_Seg python==3.10.11
 conda activate YoDe_Seg
 pip install torch==1.11.0+cu113 torchvision==0.12.0+cu113 torchaudio==0.11.0 --extra-index-url https://download.pytorch.org/whl/cu113
@@ -18,8 +22,12 @@ Put [the weight of Deeplabv3 model](https://drive.google.com/file/d/1ipJNPU5tmCc
 Put the files or images you want to predict in the [test_img](https://github.com/OneChorm/YoDe-Segmentation/blob/master/test_img) folder
 
 ### Step 4: Predict
-```bash
-yode_seg 
-```
+run the predict_molecular.py
+
+## Example
+More examples are given in [this Jupyter Notebook](https://github.com/OneChorm/YoDe-Segmentation/blob/master/YoDe-Segmentation_documentation.ipynb).
+
 ## Datasets
 You can download the Datasets at [YoDe-Segmentation_data](https://figshare.com/articles/journal_contribution/YoDe-Segmentation_DATA_zip/24456277)
+
+
