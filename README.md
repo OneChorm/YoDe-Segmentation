@@ -1,8 +1,5 @@
 # YoDe-Segmentation
 
-## YoDe-Segmentation web app
-You can use YoDe-Segmentation function by [YoDe-Segmentation web app](http://yode-segmentation.com) 
-
 ## Usage
 ### Step 1: Environ building
 ```bash
